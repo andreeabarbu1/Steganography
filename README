@@ -1,0 +1,42 @@
+322CC BARBU_RODICA_ANDREEA
+	Am implementat primul task astfel: 
+	In cadrul functiei bruteforce_single_xor, care primeste ca parametrii img_width, img_height 
+si *img, iau fiecare cheie pe un octet (valori intre 0-255) si aplic XOR cu pixelii imaginii. 
+Parcurg matricea de pixeli pe linii, de sus in jos si de la stanga la dreapta, folosind doua 
+label-uri, unul pentru linii si unul pentru coloane. Pentru fiecare pixel de pe linia curenta 
+verific daca contine caractere din "revient". Stringul "revient" il retin in sectiunea .data in 
+variabila revient. Parcurg stringul revient byte cu byte pana la ultimul caracter alternativ cu 
+continuarea parcurgerii pixelilor pe linie, iar in cazul in care s-a ajuns la finalul 
+cuvantului inseamna ca linia curenta contine mesajul criptat. Daca se iese din label-ul 
+vericam_revient, folosit pentru a parcurge stringul si a compara pixelii cu caracterele din 
+"revient", inseamna ca linia curenta nu contine mesajul criptat, asa ca o sa se continue 
+parcurgerea pana la gasirea mesajului. Dupa ce mesajul a fost gasit, se va retine cheia in 
+registrul ecx si linia in registrul edx. Printez mesajul gasit parcurgand pixelii de pe linia 
+gasita; afisez cheia si linia pe care a fost gasit mesajul criptat.
+	Implementarea celui de-al doilea task:
+	Functia criptare_xor realizeaza urmatorii pasi: aplicarea cheii gasite la task-ul 1 pe 
+intreaga matrice, adaugarea mesajului "C'est un proverbe francais." pe linia care urmeaza dupa 
+mesajul gasit anterior, criptarea matricii cu noua cheie. In functia xor_matrice parcurg 
+matricea de la primul indice 0 pana la [img_width] * [img_height], aplicand XOR pe fiecare 
+pixel cu cheia primita ca argument. Initial folosesc functia xor_matrice pentru a aplica XOR cu 
+cheia gasita la task-ul 1 pe intreaga matrice. Apoi adaug mesajul retinut in string-ul 
+"raspuns" pe linia urmatoare: parcurg variabila raspuns byte cu byte pana la final si in 
+paralel parcurg pixelii de pe linie, actualizandu-i cu caracterul curent parcurs din variabila 
+raspuns. La final adaug si terminatorul de sir. Dupa ce am adaugat mesajul, calculez noua cheie 
+dupa formula: cheie = floor ((2 * cheie_veche + 3) / 5) - 4. Catul va fi retinut in variabila 
+eax. Apoi apelez iar functia xor_matrice pentru a cripta acum intreaga matrice cu cheia noua 
+gasita. Printez noua matrice cu ajutorul functiei print_image.
+	Implmentarea task-ului 6:
+	In cadrul functiei aplica_blur afisez imaginea blurata: pixelii de pe laturile imaginii 
+raman nemodificati, iar ceilalti vor deveni media aritmetica a pixelui curent si ai pixelilor 
+vecini (sus, jos, stanga, dreapta). Afisez cu ajutorul functiei print_image antetul imaginii, 
+dimensiunile si valoarea maxima, apoi afisez prima linie, care ramane nemodificata.
+Parcurg matricea pe linii, de la a doua linie pana la penultima; la fiecare linie parcursa 
+afisez primul pixel ce ramane nemodificat, apoi pentru fiecare pixel (exceptand primul si 
+ultimul pixel de pe linie) calculez noua valoare si il afisez, iar apoi afisez ultimul pixel de 
+pe linie ce ramane nemodificat. Pentru a calcula noua valoare folosesc functia media_aritmetica 
+ce primeste ca paramtrii pixelii vecini (jos, sus, stanga, dreapta) si pixelul curent. Pentru a 
+obtine adresa pixelului din stanga, scad din adresa pixelului curent 4; pentru adresa pixelului 
+din dreapta: adun 4; pentru valoarea de sus : pixel_curent + 4 * indice_coloana_curenta - 4 *   
+[img_width]; iar pentru jos: pixel_curent + 4 * indice_coloana_curenta + 4 * [img_width]. 
+Dupa modificarea si afisare pixelilor, afisex si ultima linie ce ramane nemodificata.
